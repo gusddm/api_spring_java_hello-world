@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write  # This grants the workflow permission to publish to GHCR
+
 jobs:
   build:
     runs-on: ubuntu-latest
