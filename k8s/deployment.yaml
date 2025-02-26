@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-spring-boot-app
+  labels:
+    app: my-spring-boot-app
+spec:
+  replicas: 1  # Number of pods
+  selector:
+    matchLabels:
+      app: my-spring-boot-app
+  template:
+    metadata:
+      labels:
+        app: my-spring-boot-app
+    spec:
+      containers:
+        - name: my-spring-boot-app
+          image: my-spring-boot-app:latest  # Using local Minikube image
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"  # Change based on your setup
