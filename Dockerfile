@@ -18,6 +18,7 @@ RUN ./gradlew dependencies --no-daemon
 COPY . .
 
 # Build the Spring Boot app
+RUN chmod +x ./gradlew
 RUN ./gradlew bootJar --no-daemon
 
 # ---- Step 2: Runtime Stage ----
