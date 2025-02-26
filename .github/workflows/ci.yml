@@ -59,11 +59,30 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Pull latest Docker image
+      - name: Set up Minikube
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/my-spring-boot-app:latest
-          docker pull $IMAGE_NAME
+          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube
+          minikube version
 
-      - name: Run Container (Optional)
+      - name: Start Minikube
         run: |
-          docker run -d -p 8080:8080 --name my-spring-app ghcr.io/${{ github.repository_owner }}/my-spring-boot-app:latest
+          minikube start --driver=docker
+          minikube status
+
+      - name: Set up kubectl
+        run: |
+          echo "Setting up kubectl"
+          sudo apt-get update && sudo apt-get install -y kubectl
+          kubectl version --client
+
+      - name: Set up Kubernetes deployment
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Verify deployment
+        run: |
+          kubectl rollout status deployment/my-spring-app
+          kubectl get pods
+          kubectl get svc
