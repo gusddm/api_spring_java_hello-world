@@ -1,0 +1,42 @@
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '3.2.2'
+  id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.example'
+version = '1.0.0'
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
+
+  implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+
+  // Jakarta Servlet API (for ServletRequest & ServletResponse)
+  implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+  // Lombok Dependencies
+  compileOnly 'org.projectlombok:lombok:1.18.30'
+  annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+  // Dotenv for environment variable management
+  implementation 'io.github.cdimascio:dotenv-java:2.2.4' // Add the dotenv dependency
+  implementation('me.paulschwarz:spring-dotenv:2.4.1')
+
+  implementation('org.springframework.boot:spring-boot-starter-oauth2-resource-server')
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation('org.springframework.security:spring-security-test')
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
