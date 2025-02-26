@@ -43,9 +43,23 @@ jobs:
       - name: Log in to GitHub Container Registry (GHCR)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
-      - name: Build Docker Image
+      - name: Build and Push Docker Image
         run: |
           IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/my-spring-boot-app:latest
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Pull latest Docker image
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/my-spring-boot-app:latest
+          docker pull $IMAGE_NAME
+
+      - name: Run Container (Optional)
+        run: |
+          docker run -d -p 8080:8080 --name my-spring-app ghcr.io/${{ github.repository_owner }}/my-spring-boot-app:latest
