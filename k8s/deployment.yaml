@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-spring-boot-app
-          image: my-spring-boot-app:latest  # Using local Minikube image
+          image: ghcr.io/gusddm/my-spring-boot-app:latest  # Using local Minikube image
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

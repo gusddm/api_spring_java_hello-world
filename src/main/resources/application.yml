@@ -1,14 +1,9 @@
----
-
 application:
-  audience: ${env.AUTH0_AUDIENCE}
-  client-origin-url: ${env.CLIENT_ORIGIN_URL}
 
 server:
   error:
     whitelabel:
       enabled: false
-  port: ${env.PORT}
 
 spring:
   mvc:
@@ -17,9 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://${env.AUTH0_DOMAIN}/
+          issuer-uri:
   web:
     resources:
       add-mappings: false
-
-...

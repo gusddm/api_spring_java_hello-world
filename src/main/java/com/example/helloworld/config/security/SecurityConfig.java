@@ -11,11 +11,7 @@ import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtDecoders;
-import org.springframework.security.oauth2.jwt.JwtValidators;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
@@ -65,13 +61,18 @@ public class SecurityConfig {
   }
 
   private JwtDecoder makeJwtDecoder() {
-    final var issuer = resourceServerProps.getJwt().getIssuerUri();
-    final var decoder = JwtDecoders.<NimbusJwtDecoder>fromIssuerLocation(issuer);
-    final var withIssuer = JwtValidators.createDefaultWithIssuer(issuer);
-    final var tokenValidator = new DelegatingOAuth2TokenValidator<>(withIssuer, this::withAudience);
-
-    decoder.setJwtValidator(tokenValidator);
-    return decoder;
+//    final var issuer = resourceServerProps.getJwt().getIssuerUri();
+//    final var decoder = JwtDecoders.<NimbusJwtDecoder>fromIssuerLocation(issuer);
+//    final var withIssuer = JwtValidators.createDefaultWithIssuer(issuer);
+//    final var tokenValidator = new DelegatingOAuth2TokenValidator<>(withIssuer, this::withAudience);
+//
+//    decoder.setJwtValidator(tokenValidator);
+    return new JwtDecoder() {
+      @Override
+      public Jwt decode(String token) throws JwtException {
+        return null;
+      }
+    };
   }
 
   private OAuth2TokenValidatorResult withAudience(final Jwt token) {
